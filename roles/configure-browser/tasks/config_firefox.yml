@@ -1,0 +1,7 @@
+---
+- name: Updating Firefox policies.json
+  ansible.builtin.template:
+    src: templates/policies.json.j2
+    dest: "/usr/share/firefox-esr/distribution/policies.json"
+  become: true
+  become_method: ansible.builtin.sudo

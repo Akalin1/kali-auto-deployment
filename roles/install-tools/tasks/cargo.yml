@@ -1,0 +1,9 @@
+---
+- name: Installing alacritty
+  community.general.cargo:
+    name: alacritty
+    locked: true
+    state: latest
+  
+
+  

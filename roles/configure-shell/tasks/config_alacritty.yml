@@ -1,0 +1,42 @@
+---
+- name: Check if alacritty already in x-terminal-emulator 
+  ansible.builtin.lineinfile:
+    path: /var/lib/dpkg/alternatives/x-terminal-emulator
+    regexp: "{{ ansible_env.HOME }}/.cargo/bin/alacritty"
+    state: absent
+  check_mode: yes
+  changed_when: false
+  register: alacritty_line
+
+- name: Set default Terminal emulator
+  ansible.builtin.command:
+    cmd: /usr/bin/update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator {{ ansible_env.HOME }}/.cargo/bin/alacritty 100
+  become: true
+  when: not alacritty_line.found
+
+- name: Ensure auto in x-terminal-emulator first line
+  ansible.builtin.lineinfile:
+    dest: /var/lib/dpkg/alternatives/x-terminal-emulator
+    regexp: "^manual$"
+    line: "auto"
+    state: present
+    firstmatch: yes
+  become: true
+
+- name: Ensure alacritty config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/alacritty"
+    state: directory
+    owner: "{{ ansible_user | default(ansible_env.USER) }}"
+    group: "{{ ansible_user | default(ansible_env.USER) }}"
+    mode: '0755'
+  become: false
+
+- name: Copying alacritty.toml
+  ansible.builtin.copy:
+    src: files/alacritty.toml
+    dest: "{{ ansible_env.HOME }}/.config/alacritty/alacritty.toml"
+    force: true
+    mode: '0644'
+    #remote_src: yes
+  become: false

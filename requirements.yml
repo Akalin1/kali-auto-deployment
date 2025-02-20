@@ -1,0 +1,5 @@
+---
+# vscode install & config
+- src: gantsign.visual-studio-code
+# Go language SDK install
+- src: gantsign.ansible-role-golang

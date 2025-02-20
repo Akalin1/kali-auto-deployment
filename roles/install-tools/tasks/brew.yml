@@ -1,0 +1,40 @@
+---
+- name: Check if brew has been installed
+  ansible.builtin.stat:
+    path: /home/linuxbrew/.linuxbrew/bin/brew
+  become: true
+  become_method: ansible.builtin.sudo
+  register: linuxbrew_file
+
+- name: Install Homebrew
+  when: linuxbrew_file.stat.exists == False
+  become: false
+  block:
+  - name: Download Homebrew installation script
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+      dest: /tmp/brew_install.sh
+      mode: '0744'
+    environment:
+      https_proxy: "{{ proxy }}"
+
+  - name: Run brew_install.sh install brew
+    ansible.builtin.shell: 
+      cmd: /tmp/brew_install.sh
+    environment: 
+      NONINTERACTIVE: "1"
+      https_proxy: "{{ proxy }}"
+
+- name: Installing brew-packages 
+  community.general.homebrew:
+    name:
+      - oh-my-posh
+      - gitleaks
+      - trufflehog
+      - neovim
+      - findomain
+    state: present
+  retries: 3
+  delay: 2
+  environment: 
+    https_proxy: "{{ proxy }}"

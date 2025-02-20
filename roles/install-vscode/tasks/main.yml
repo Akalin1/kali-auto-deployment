@@ -1,0 +1,37 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/install-vscode
+# another method
+# - name: install vscode
+#   include_tasks: install-vscode.yml
+
+- name: install & configure vscode
+  import_role: 
+    name: gantsign.visual-studio-code
+  environment: 
+    https_proxy: "{{ proxy }}"
+  vars:
+    users:
+    - username: "{{ ansible_user_id }}"
+      # '' defaults install latest vscode version
+      visual_studio_code_version: ''
+      visual_studio_code_build: stable
+      visual_studio_code_mirror: 'https://packages.microsoft.com'
+      visual_studio_code_gpgcheck: true
+      # false Ensure repo will be added in apt
+      visual_studio_code_skip_add_repo: false
+      # extension Identifier
+      visual_studio_code_extensions:
+        - ms-ceintl.vscode-language-pack-zh-hans
+        - formulahendry.code-runner
+        - snyk-security.snyk-vulnerability-scanner
+        - GitHub.copilot
+        - ms-python.python
+        #- DEVSENSE.phptools-vscode
+        - redhat.ansible
+        - ms-vscode.cpptools
+        #- ms-vscode.cpptools-extension-pack
+        - ms-dotnettools.csharp
+        #- ms-dotnettools.csdevkit
+        - vscjava.vscode-java-pack
+        

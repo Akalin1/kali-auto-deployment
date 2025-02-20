@@ -1,0 +1,37 @@
+---
+- name: Ensure tmux config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/tmux"
+    state: directory
+    owner: "{{ ansible_user | default(ansible_env.USER) }}"
+    group: "{{ ansible_user | default(ansible_env.USER) }}"
+    mode: '0755'
+  become: false
+
+- name: Downloading tpm
+  ansible.builtin.git:
+    repo: "https://github.com/tmux-plugins/tpm"
+    dest: "{{ ansible_env.HOME }}/.config/tmux/plugins/tpm"
+  environment: 
+    https_proxy: "{{ proxy }}"
+  become: false
+  retries: 3
+  delay: 2
+
+- name: Copying tmux.conf
+  ansible.builtin.copy:
+    src: files/tmux.conf
+    dest: "{{ ansible_env.HOME }}/.config/tmux/tmux.conf"
+    force: true
+    mode: '0644'
+    #remote_src: yes
+  become: false
+
+- name: Copying tmux-tokyonight-statusbar.conf
+  ansible.builtin.copy:
+    src: files/tmux-tokyonight-statusbar.conf
+    dest: "{{ ansible_env.HOME }}/.config/tmux/tmux-tokyonight-statusbar.conf"
+    force: true
+    mode: '0644'
+    #remote_src: yes
+  become: false

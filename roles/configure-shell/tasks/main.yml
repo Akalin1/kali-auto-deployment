@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/configure-shell
+- include_tasks: config_shell.yml
+- include_tasks: config_alacritty.yml
+- include_tasks: config_nvim.yml
+- include_tasks: config_tmux.yml

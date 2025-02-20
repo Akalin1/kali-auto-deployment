@@ -1,0 +1,42 @@
+---
+- name: Check if packages.microsoft.gpg exists
+  ansible.builtin.stat:
+    path: /etc/apt/keyrings/packages.microsoft.gpg
+  become: true
+  become_method: ansible.builtin.sudo
+  register: packages_microsoft_gpg_file
+
+# if packages.microsoft.gpg not exits then install it
+- name: Download microsoft.asc GPG key
+  ansible.builtin.get_url:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    dest: /tmp/microsoft.asc
+    mode: '0644'
+  become: true
+  become_method: ansible.builtin.sudo
+  environment:
+    https_proxy: "{{ proxy }}"
+  when: packages_microsoft_gpg_file.stat.exists == False
+
+- name: Convert GPG key & put in /etc/apt/keyrings/packages.microsoft.gpg
+  ansible.builtin.command:
+    cmd: /usr/bin/gpg --dearmor --output /etc/apt/keyrings/packages.microsoft.gpg /tmp/microsoft.asc
+  become: true
+  become_method: ansible.builtin.sudo
+  when: packages_microsoft_gpg_file.stat.exists == False
+
+- name: Add vscode repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+    state: present
+    filename: vscode
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Installing vscode
+  ansible.builtin.apt:
+    name: code
+    state: present
+    #force_apt_get: true
+  become: true
+  become_method: ansible.builtin.sudo

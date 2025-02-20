@@ -1,0 +1,21 @@
+---
+- name: Check if nvim config file exists
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.config/nvim"
+  become: true
+  become_method: ansible.builtin.sudo
+  register: nvim_config_path
+
+- name: Copying nvim config file
+  ansible.builtin.copy:
+    src: files/nvim
+    dest: "{{ ansible_env.HOME }}/.config"
+    mode: 0664
+    remote_src: false
+  become: false
+  #register: out
+  when: nvim_config_path.stat.exists == false
+
+# - name: Show
+#   debug:
+#     var: out

@@ -1,0 +1,47 @@
+---
+- name: Install go-tools
+  ansible.builtin.shell:
+    cmd: go install {{ item.url }}
+    creates: "{{ ansible_env.GOPATH | default(ansible_env.HOME + '/go') }}/bin/{{ item.tool }}"
+  become: false
+  retries: 3
+  delay: 2
+  environment:
+    GOPROXY: "{{ GOPROXY }}"
+  loop:
+    - { tool: 'gf' , url: 'github.com/tomnomnom/gf@latest'}
+    - { tool: 'unfurl', url: 'github.com/tomnomnom/unfurl@latest'}
+    - { tool: 'anew', url: 'github.com/tomnomnom/anew@latest'}
+    - { tool: 'meg', url: 'github.com/tomnomnom/meg@latest'}
+    - { tool: 'subzy', url: 'github.com/PentestPad/subzy@latest'}
+    - { tool: 'qsreplace', url: 'github.com/tomnomnom/qsreplace@latest'}
+    - { tool: 'shosubgo', url: 'github.com/incogbyte/shosubgo@latest'}
+    - { tool: 'assetfinder', url: 'github.com/tomnomnom/assetfinder@latest'}
+    - { tool: 'kerbrute' , url: 'github.com/ropnop/kerbrute@latest' }
+    - { tool: 'gau', url: 'github.com/lc/gau/v2/cmd/gau@latest'}
+    - { tool: 'waybackurls', url: 'github.com/tomnomnom/waybackurls@latest'}
+    - { tool: 'httprobe', url: 'github.com/tomnomnom/httprobe@latest'}
+    - { tool: 'subfinder', url: 'github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest'}
+    - { tool: 'asnmap', url: 'github.com/projectdiscovery/asnmap/cmd/asnmap@latest'}
+    - { tool: 'httpx' , url: 'github.com/projectdiscovery/httpx/cmd/httpx@latest' }
+    - { tool: 'katana' , url: 'github.com/projectdiscovery/katana/cmd/katana@latest'}
+    - { tool: 'tlsx' , url: 'github.com/projectdiscovery/tlsx/cmd/tlsx@latest'}
+    - { tool: 'dnsx', url: 'github.com/projectdiscovery/dnsx/cmd/dnsx@latest'}
+    - { tool: 'nuclei' , url: 'github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest'}
+    - { tool: 'gospider' , url: 'github.com/jaeles-project/gospider@latest'}
+    - { tool: 'gowitness', url: 'github.com/sensepost/gowitness@latest'}
+    - { tool: 'gitdorks_go', url: 'github.com/damit5/gitdorks_go@latest'}
+    - { tool: 'github-subdomains', url: 'github.com/gwen001/github-subdomains@latest'}
+    - { tool: 'gitlab-subdomains', url: 'github.com/gwen001/gitlab-subdomains@latest'}
+    - { tool: 'github-regexp', url: 'github.com/gwen001/github-regexp@latest'}
+    - { tool: 'haktrails', url: 'github.com/hakluke/haktrails@latest'}
+    - { tool: 'webpaste', url: 'github.com/xnl-h4ck3r/webpaste@latest'}
+    - { tool: 'chisel', url: 'github.com/jpillora/chisel@latest'}
+    - { tool: 'cero', url: 'github.com/glebarez/cero@latest'}
+    - { tool: 'chaos', url: 'github.com/projectdiscovery/chaos-client/cmd/chaos@latest'}
+    - { tool: 'wordlistgen', url: 'github.com/ameenmaali/wordlistgen@latest'}
+    - { tool: 'csprecon', url: 'github.com/edoardottt/csprecon/cmd/csprecon@latest'}
+    - { tool: 'nipejs', url: 'github.com/i5nipe/nipejs/v2@latest'}
+    - { tool: 'puredns', url: 'github.com/d3mondev/puredns/v2@latest'}
+    - { tool: 'smap', url: 'github.com/s0md3v/smap/cmd/smap@latest'}
+

@@ -1,0 +1,10 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/install-tools
+ - include_tasks: apt.yml
+ - include_tasks: snap.yml
+ - include_tasks: brew.yml
+ - include_tasks: cargo.yml
+ - include_tasks: pipx.yml
+ - include_tasks: go.yml
+#- include_tasks: nvm.yml

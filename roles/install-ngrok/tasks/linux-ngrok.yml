@@ -1,0 +1,42 @@
+- name: Check if /usr/local/bin/ngrok exists
+  ansible.builtin.stat:
+    path: /usr/local/bin/ngrok
+  become: true
+  become_method: ansible.builtin.sudo
+  register: ngrok_file
+
+- name: Install ngrok
+  when: ngrok_file.stat.exists == False
+  become: false
+  block: 
+  - name: Download ngrok GPG key
+    ansible.builtin.get_url:
+      url: https://ngrok-agent.s3.amazonaws.com/ngrok.asc
+      dest: /tmp/ngrok.asc
+      mode: '0644'
+    become: true
+    become_method: ansible.builtin.sudo
+    environment:
+      https_proxy: "{{ proxy }}"
+
+  - name: Convert GPG key & put in /etc/apt/keyrings/ngrok.gpg
+    ansible.builtin.command:
+      cmd: /usr/bin/gpg --dearmor --output /etc/apt/keyrings/ngrok.gpg /tmp/ngrok.asc
+    become: true
+    become_method: ansible.builtin.sudo
+
+  - name: Add ngrok repository
+    ansible.builtin.apt_repository:
+      repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/ngrok.gpg] https://ngrok-agent.s3.amazonaws.com buster main"
+      state: present
+      filename: docker
+    become: true
+    become_method: ansible.builtin.sudo
+
+  - name: Installing ngrok (apt)
+    ansible.builtin.apt:
+      name: ngrok
+      state: present
+      #force_apt_get: true
+    become: true
+    become_method: ansible.builtin.sudo

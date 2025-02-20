@@ -1,0 +1,67 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    #force_apt_get: true
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Upgrade apt packages
+  ansible.builtin.apt:
+    #force_apt_get: true
+    upgrade: true
+  become: true
+  become_method: ansible.builtin.sudo
+  # register: apt_update_result
+
+- name: Installing apt-packages
+  ansible.builtin.apt:
+  # add packages to here
+    name:
+      - apt-transport-https
+      - build-essential
+      - pkg-config
+      - libfontconfig1-dev
+      - libxcb-xfixes0-dev
+      - libxkbcommon-dev
+      - cmake
+      - lolcat
+      - parallel
+      - fonts-firacode
+      - openjdk-23-jdk
+      - fzf
+      - tmux
+      - xclip
+      - jq
+      - pipx
+      - golang
+      - snapd
+      - cargo
+      - git
+      - neofetch
+      - ntpdate
+      - exiftool
+      - poppler-utils
+      - flameshot
+      - amass
+      - neo4j
+      - bloodhound
+      - seclists
+      - sshpass
+    state: present
+    #force_apt_get: true
+  become: true
+  become_method: ansible.builtin.sudo
+  # register: package_result
+
+- name: Ensure Uninstall dnschef (apt)
+  ansible.builtin.apt:
+    name: dnschef
+    state: absent
+  become: true
+  become_method: ansible.builtin.sudo
+
+# - name: Show
+#   ansible.builtin.debug:
+#     var: package_result

@@ -1,0 +1,38 @@
+---
+- name: Disable NetworkManager DNS handling
+  ansible.builtin.blockinfile:
+    path: /etc/NetworkManager/conf.d/90-dns-none.conf
+    create: true
+    insertafter: BOF
+    block: |
+      [main]
+      dns=none
+    mode: '0644'
+  become: true
+  become_method: ansible.builtin.sudo
+  notify: Reload NetworkManager
+
+- name: Modify /etc/resolv.conf
+  ansible.builtin.lineinfile:
+    dest: '/etc/resolv.conf'
+    regexp: "^{{ item.name }} {{ item.ip }}"
+    line: "{{ item.name }} {{ item.ip }}"
+    insertbefore: BOF
+    state: present
+  become: true
+  become_method: ansible.builtin.sudo
+  loop:
+    - {'name': 'nameserver', 'ip': '1.1.1.1' }
+    - {'name': 'nameserver', 'ip': '8.8.8.8' }
+    - {'name': '#nameserver', 'ip': '127.0.0.1' }
+    - {'name': 'search', 'ip': 'localdomain' }
+
+- name: Fix /etc/hosts
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    insertbefore: BOF
+    block: | 
+      127.0.0.1   localhost {{ ansible_hostname }} localhost.localdomain
+    state: present
+  become: true
+  become_method: ansible.builtin.sudo

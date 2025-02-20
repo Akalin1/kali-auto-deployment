@@ -1,0 +1,68 @@
+---
+- name: Check if /usr/bin/docker exists
+  ansible.builtin.stat:
+    path: /usr/bin/docker
+  become: true
+  become_method: ansible.builtin.sudo
+  register: docker_file
+
+- name: Download docker GPG key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/debian/gpg
+    dest: /tmp/docker.asc
+    mode: '0644'
+  become: true
+  become_method: ansible.builtin.sudo
+  environment:
+    https_proxy: "{{ proxy }}"
+  when: docker_file.stat.exists == False
+
+- name: Convert GPG key & put in /etc/apt/keyrings/docker.gpg
+  ansible.builtin.command:
+    cmd: /usr/bin/gpg --dearmor --output /etc/apt/keyrings/docker.gpg /tmp/docker.asc
+  become: true
+  become_method: ansible.builtin.sudo
+  when: docker_file.stat.exists == False
+
+- name: Add docker repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable"
+    state: present
+    filename: docker
+  become: true
+  become_method: ansible.builtin.sudo
+  when: docker_file.stat.exists == False
+
+- name: Installing docker-ce (apt)
+  ansible.builtin.apt:
+    name: docker-ce
+    state: present
+    #force_apt_get: true
+  become: true
+  become_method: ansible.builtin.sudo
+  when: docker_file.stat.exists == False
+
+- name: Installing docker-ce-cli (apt)
+  ansible.builtin.apt:
+    name: 
+      - docker-ce-cli
+      - containerd.io
+    state: present
+    #force_apt_get: true
+  become: true
+  become_method: ansible.builtin.sudo
+  when: docker_file.stat.exists == False
+
+- name: Ensure "docker" group exists
+  ansible.builtin.group:
+    name: docker
+    state: present
+  
+- name: Add current user to "docker" group
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: true
+  become: true
+  become_method: ansible.builtin.sudo
+

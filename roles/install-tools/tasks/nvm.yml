@@ -1,0 +1,50 @@
+---
+- name: Check if nvm has been installed
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.config/nvm"
+  become: false
+  register: nvm_path
+
+- name: Install NodeVersionManager(nvm)
+  when: nvm_path.stat.exists == false
+  become: false
+  vars:
+    nvm_install_script_path: "/tmp/nvm-install.sh"
+  environment: 
+    https_proxy: "{{ proxy }}"
+  block:
+  - name: Download nvm install.sh (github)
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/creationix/nvm/master/install.sh
+      dest: "{{ nvm_install_script_path }}"
+      mode: '0755'
+    retries: 3
+    delay: 2
+
+  - name: Run install.sh
+    ansible.builtin.shell:
+      cmd: "/bin/bash {{ nvm_install_script_path|quote }}"
+    args:
+      executable: /bin/bash
+      chdir: "{{ ansible_env.HOME }}"
+      creates: "{{ ansible_env.HOME }}/.config/nvm/nvm.sh"
+    register: out
+  
+  # - name: Show
+  #   debug:
+  #     var: out
+
+- name: Installing Node.js , version using loop
+  ansible.builtin.shell:
+    cmd: source {{ ansible_env.HOME }}/.config/nvm/nvm.sh && nvm install {{ item|quote }}
+  args:
+    executable: /bin/bash
+    chdir: "{{ ansible_env.HOME }}"
+    creates: "{{ ansible_env.HOME }}/.config/nvm/versions/node/v{{item}}"
+  environment: 
+    https_proxy: "{{ proxy }}"
+  retries: 3
+  delay: 2
+  become: false
+  loop:
+    - 23.5.0

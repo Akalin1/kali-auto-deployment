@@ -1,0 +1,19 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for roles/configure-browser
+FirefoxPlugins:
+  - "darkreader"
+  - "foxyproxy-standard"
+  - "ublock-origin"
+  - "happy-bonobo-disable-webrtc"
+  - "edit-cookie"
+  - "hacktools"
+  - "Trufflehog"
+  - "link-gopher"
+  - "findsomething"
+  - "retire-js"
+  - "wappalyzer"
+  - "BuiltWith"
+  - "open-multiple-urls"
+  - "user-agent-string-switcher"
+  - "immersive-translate"

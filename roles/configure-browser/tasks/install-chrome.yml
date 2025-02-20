@@ -1,0 +1,26 @@
+---
+- name: Download Google Chrome GPG Key
+  ansible.builtin.get_url:
+    url: https://dl.google.com/linux/linux_signing_key.pub
+    dest: /etc/apt/keyrings/google.asc
+    mode: '0644'
+  become: true
+  become_method: ansible.builtin.sudo
+  environment:
+    https_proxy: "{{ proxy }}"
+
+- name: Add Google Chrome repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/google.asc] https://dl.google.com/linux/chrome/deb/ stable main"
+    state: present
+    filename: google-chrome
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Installing Google-chrome browser (apt)
+  ansible.builtin.apt:
+    name: google-chrome-stable
+    state: present
+    #force_apt_get: true
+  become: true
+  become_method: ansible.builtin.sudo

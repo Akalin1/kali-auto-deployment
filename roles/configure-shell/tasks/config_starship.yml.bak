@@ -1,0 +1,26 @@
+---
+- name: Ensure StarShip environment variables in ~/.zshrc
+  ansible.builtin.lineinfile:
+    dest: '~/.zshrc'
+    regexp: '^eval "$(starship init zsh)"'
+    line: 'eval "$(starship init zsh)"'
+    insertbefore: EOF
+    state: present
+  become: false  # current user
+
+- name: Check if $HOME/.config/starship.toml exists
+  ansible.builtin.stat:
+    path: $HOME/.config/starship.toml
+  register: starship_toml_file
+  become: false
+
+# No exists then copy StarShip.toml
+- name: Copying starship.toml
+  ansible.builtin.copy:
+    src: files/starship.toml
+    dest: $HOME/.config/starship.toml
+    #remote_src: yes
+    mode: 0664
+  become: false
+  when: starship_toml_file.stat.exists == False
+    

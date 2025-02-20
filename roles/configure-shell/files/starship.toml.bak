@@ -1,0 +1,254 @@
+# Modified based on https://github.com/smithumble/starship-cockpit/tree/main
+"$schema" = 'https://starship.rs/config-schema.json'
+add_newline = false
+
+palette = "tailwind"
+# First Line
+format = """
+$os\
+$username\
+$directory\
+$c\
+$rust\
+$golang\
+$nodejs\
+$php\ 
+$java\
+$python\
+$docker_context\
+$fill\
+$git_branch\
+$git_commit\
+$git_status\
+$git_metrics\
+$git_state\
+$jobs
+$character
+"""
+
+# Second Line
+right_format= """
+$status\
+$cmd_duration
+"""
+
+[palettes.tailwind]
+fg = "#ffffff"
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+#red2 = "#f38ba8"
+red = "#FF2C6D"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+orange = "#fdba74"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+
+[character]
+success_symbol = "[](bold green)"
+error_symbol = "[✗](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+
+
+[os]
+disabled = false
+style = "text"
+format = '[$symbol]($style)'
+
+[os.symbols]
+#Kali = "  "
+Kali = " "
+#Kali = "󰺷 "
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰀵"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+Arch = "󰣇"
+Artix = "󰣇"
+EndeavourOS = ""
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+Pop = ""
+
+[username]
+show_always = true
+format = '[$user]($style) '
+style_user = "text"
+style_root = "bold red"
+
+[directory]
+format = '[$path]($style)[$read_only]($read_only_style)'
+style = "bold sapphire"
+truncation_length = 0
+fish_style_pwd_dir_length = 3
+home_symbol = "~"
+read_only = " "
+read_only_style = "green"
+use_logical_path = false
+
+[fill]
+symbol = " "
+style = 'green'
+disabled = false
+
+[git_branch]
+symbol = ""
+style = "fg:teal"
+format = '[( $symbol $branch )]($style)'
+only_attached = true
+ignore_branches = []
+truncation_length = 25
+truncation_symbol = "..."
+always_show_remote = false
+disabled = false
+
+[git_commit]
+style = "fg:teal"
+format = "[(( $tag)( @$hash) )]($style)"
+commit_hash_length = 7
+only_detached = true
+tag_symbol = "󰓼 "
+tag_disabled = false
+disabled = false
+
+[git_status]
+style = "fg:teal"
+format = '[($ahead_behind )($all_status )]($style)'
+stashed = "*${count}"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+up_to_date = ""
+diverged = "⇡${ahead_count}⇣${behind_count}"
+conflicted = "=${count}"
+deleted = "×${count}"
+renamed = "»${count}"
+modified = "!${count}"
+staged = "+${count}"
+untracked = "?${count}"
+ignore_submodules = false
+disabled = false
+
+[git_metrics]
+format = '[(([+$added]($added_style))[|](fg:text)([-$deleted]($deleted_style)) )](fg:teal)'
+added_style = "fg:green"
+deleted_style = "fg:maroon"
+only_nonzero_diffs = true
+disabled = false
+
+[git_state]
+style = "fg:bright-red"
+format = '[($state( $progress_current/$progress_total) )]($style bold)'
+rebase = "REBASING"
+merge = "MERGING"
+revert = "REVERTING"
+cherry_pick = "CHERRY-PICKING"
+bisect = "BISECTING"
+am = "AM"
+am_or_rebase = "AM/REBASE"
+disabled = false
+
+[jobs]
+symbol = ""
+style = "fg:orange"
+format = '[$symbol( $number) ]($style)'
+symbol_threshold = 1
+number_threshold = 1
+
+[c]
+symbol = ""
+style = "fg:blue"
+format = '[( $symbol( $version) )]($style)'
+
+[rust]
+symbol = "󱘗"
+style = "fg:blue"
+format = '[( $symbol( $version) )]($style)'
+
+[golang]
+symbol = "󰟓"
+style = "fg:blue"
+format = '[( $symbol( $version) )]($style)'
+
+[nodejs]
+symbol = ""
+style = "fg:blue"
+format = '[( $symbol( $version) )]($style)'
+
+[php]
+symbol = ""
+style = "fg:blue"
+format = '[( $symbol( $version) )]($style)'
+
+[java]
+symbol = ""
+style = "fg:blue"
+format = '[( $symbol( $version) )]($style)'
+
+[python]
+symbol = ""
+style = "fg:blue"
+format = '[( $symbol( $version)( $virtualenv) )]($style)'
+
+[docker_context]
+symbol = ""
+style = "fg:blue"
+format = '[( $symbol( $context) )]($style)'
+
+[status]
+disabled = false
+format = '[( $symbol( $common_meaning)( $signal_name) )]($style)'
+map_symbol = true
+pipestatus = true
+symbol = '󰅙'
+success_symbol = ''
+not_executable_symbol = '󰂭'
+not_found_symbol = '󰍉'
+sigint_symbol = '󰐊'
+signal_symbol = '󱐋'
+style = 'bold fg:red'
+recognize_signal_code = true
+
+[time]
+disabled = false
+time_format = "%R"
+style = "fg:color_time"
+format = '[ $time ]($style)'
+
+[cmd_duration]
+min_time = 2000
+#format = '[ 󱫑 $duration ]($style)'
+format = '[ 󱦟 $duration ]($style)'
+style = 'fg:yellow'
+show_milliseconds = false
+disabled = false

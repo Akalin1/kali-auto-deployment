@@ -1,0 +1,119 @@
+console_title_template = '{{ .Shell }} in {{ .Folder }}'
+version = 3
+final_space = true
+
+[secondary_prompt]
+  template = ' '
+  background = 'transparent'
+  foreground = 'p:teal'
+
+[transient_prompt]
+  template = ' '
+  background = 'transparent'
+  foreground_templates = ['{{if gt .Code 0}}red{{end}}', '{{if eq .Code 0}}p:mauve{{end}}']
+  style = 'bold'
+
+# First Line (left)
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  # directory
+  [[blocks.segments]]
+    template = '{{ .Path }}'
+    foreground = 'p:blue'
+    background = 'transparent'
+    type = 'path'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+      style = 'full'
+
+  # git status
+  [[blocks.segments]]
+    template = '  {{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }} <cyan>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>'
+    foreground = 'p:mauve'
+    background = 'transparent'
+    type = 'git'
+    style = 'plain'
+
+    # git branch
+    [blocks.segments.properties]
+      branch_icon = ''
+      cache_duration = 'none'
+      commit_icon = '@'
+      fetch_status = true
+
+# second line (right)
+[[blocks]]
+  type = 'rprompt'
+  overflow = 'hidden'
+  newline = false
+
+  # state code
+  [[blocks.segments]]
+    template = '{{ if ne .Code 0 }} ✗ {{ reason .Code }} {{ end }}'
+    foreground = 'p:red'
+    background = 'transparent'
+    type = 'text'
+    style = 'plain'
+
+  # Execution time
+  [[blocks.segments]]
+    template = '󱦟 {{ .FormattedMs }}'
+    foreground = 'p:yellow'
+    background = 'transparent'
+    type = 'executiontime'
+    style = 'plain'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+      style = 'round'
+      threshold = 500
+
+# Second Line (left)
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    template = ''
+    background = 'transparent'
+    type = 'text'
+    style = 'plain'
+    foreground_templates = ['{{if gt .Code 0}}p:red{{end}}', '{{if eq .Code 0}}p:mauve{{end}}']
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+
+# color(catppuccin_Mocha)
+[palette]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"

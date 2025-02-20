@@ -1,0 +1,22 @@
+---
+- name: Check if FiraCodeNerdFont-Regular.ttf exists
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/share/fonts/FiraCodeNerdFont-Regular.ttf"
+  register: FiraCode_file
+  become: false
+
+- name: Copying getNerdFont.sh to /tmp
+  ansible.builtin.copy:
+    src: files/getNerdFont.sh
+    dest: /tmp/getNerdFont.sh
+    #remote_src: yes
+    mode: 0744
+  when: FiraCode_file.stat.exists == False
+
+- name: Running getNerdFont.sh to Download FiraCodeNerdFont-Regular.ttf from github & use it
+  ansible.builtin.shell:
+    cmd: /tmp/getNerdFont.sh
+  when: FiraCode_file.stat.exists == False
+  environment: 
+    https_proxy: "{{ proxy }}"
+  become: false

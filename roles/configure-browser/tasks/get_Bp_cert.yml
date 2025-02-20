@@ -1,0 +1,44 @@
+---
+- name: Check if BurpSuiteCA.der exists
+  ansible.builtin.stat:
+    path: /usr/local/share/ca-certificates/BurpSuiteCA.der
+  register: burp_cert_file
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Copying getburpcert.sh to /tmp
+  ansible.builtin.copy:
+    src: files/getburpcert.sh
+    dest: /tmp/getburpcert.sh
+    #remote_src: yes
+    mode: 0744
+  when: burp_cert_file.stat.exists == False
+
+- name: Running getburpcert.sh Download CA Certificate from localhost
+  ansible.builtin.shell:
+    cmd: /tmp/getburpcert.sh
+  when: burp_cert_file.stat.exists == False
+
+# - name: Check getburpcert.sh Success Download CA Certificate
+#   ansible.builtin.stat:
+#     path: /tmp/bp_cacert.der
+#   register: bp_cacert_file
+#   when: burp_cert_file.stat.exists == False
+
+- name: Copying Bp CA Certificate to /usr/local/share/ca-certificates
+  ansible.builtin.copy:
+    src: /tmp/bp_cacert.der
+    dest: /usr/local/share/ca-certificates/BurpSuiteCA.der
+    owner: root
+    group: root
+    mode: 0644
+    remote_src: true
+  become: true
+  become_method: ansible.builtin.sudo
+  when: burp_cert_file.stat.exists == False
+  failed_when: not bp_cacert_file.stat.exists
+  #register: ca_result
+
+
+
+  

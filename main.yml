@@ -1,0 +1,20 @@
+---
+- name: Init
+  hosts: localhost
+  # set global proxy:
+  vars: 
+    proxy: "http://192.168.10.1:10800"
+    GOPROXY: "https://goproxy.cn,direct"
+  roles:
+    #- configure-system
+    - install-tools
+    #- configure-shell
+    #- install-docker
+    #- configure-browser
+    #- install-vscode
+    #- install-ngrok
+    
+  # tasks:
+  # - name: Print ansible_distribution_release
+  #   ansible.builtin.debug:
+  #     msg: "{{ ansible_distribution_release }}"

@@ -1,0 +1,40 @@
+---
+# - name: Ensure snap environment variables in ~/.zshrc
+#   ansible.builtin.lineinfile:
+#     dest: '~/.zshrc'
+#     regexp: "^export PATH=$PATH:/snap/bin"
+#     line: "export PATH=$PATH:/snap/bin"
+#     insertbefore: EOF
+#     state: present
+#   become: false
+
+- name: Start the snapd.service so it can initialize itself
+  ansible.builtin.systemd_service:
+    name: snapd.service
+    state: started
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Start and enable the snapd socket
+  ansible.builtin.systemd_service:
+    name: snapd.socket
+    state: started
+    enabled: true
+  become: true
+  become_method: ansible.builtin.sudo
+  register: service_result
+
+- name: Installing snap-packages thought --classic
+  community.general.snap:
+    name:
+      - aws-cli
+      - htmlq
+    classic: true
+    channel: latest/candidate
+  delay: 3
+  retries: 3
+  environment: 
+    http_proxy: "{{ proxy }}"
+    https_proxy: "{{ proxy }}"
+  become: true
+  become_method: ansible.builtin.sudo

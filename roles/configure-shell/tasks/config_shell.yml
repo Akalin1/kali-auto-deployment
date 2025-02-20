@@ -1,0 +1,35 @@
+---
+- name: Downloading Zinit
+  ansible.builtin.git:
+    repo: "https://github.com/zdharma-continuum/zinit.git"
+    dest: "{{ ansible_env.HOME }}/.local/share/zinit"
+  environment: 
+    https_proxy: "{{ proxy }}"
+  become: false
+
+- name: Copying .zshrc
+  ansible.builtin.copy:
+    src: files/zshrc
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    force: true
+    mode: '0664'
+    #remote_src: yes
+  become: false
+
+- name: Ensure ohmyposh config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/ohmyposh"
+    state: directory
+    owner: "{{ ansible_user | default(ansible_env.USER) }}"
+    group: "{{ ansible_user | default(ansible_env.USER) }}"
+    mode: '0755'
+  become: false
+
+- name: Copying ohmyposh.toml
+  ansible.builtin.copy:
+    src: files/ohmyposh.toml
+    dest: "{{ ansible_env.HOME }}/.config/ohmyposh/ohmyposh.toml"
+    force: true
+    mode: '0644'
+    #remote_src: yes
+  become: false
