@@ -78,7 +78,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
 # Sudo inheriting PATH
-#alias sudo='sudo -E'
+alias sudo='sudo env PATH=$PATH'
 alias ls='ls --color=auto'
 alias ll='ls -lh'
 alias la='ls -A'
@@ -124,3 +124,4 @@ TerminalEmulator=alacritty
 
 export https_proxy=http://192.168.10.1:10800
 export http_proxy=http://192.168.10.1:10800
+export all_proxy=socks5://192.168.10.1:10800

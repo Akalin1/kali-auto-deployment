@@ -49,6 +49,8 @@
       - bloodhound
       - seclists
       - sshpass
+      - libpcap-dev
+      - s3scanner
     state: present
     #force_apt_get: true
   become: true

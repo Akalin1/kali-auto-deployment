@@ -21,6 +21,8 @@
     - poetry
     - bloodyad
     - git-dumper
+    - remotezip
+    - dnsgen
   environment: 
     http_proxy: "{{ proxy }}"
     https_proxy: "{{ proxy }}"

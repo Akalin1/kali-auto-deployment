@@ -41,7 +41,15 @@
     - { tool: 'chaos', url: 'github.com/projectdiscovery/chaos-client/cmd/chaos@latest'}
     - { tool: 'wordlistgen', url: 'github.com/ameenmaali/wordlistgen@latest'}
     - { tool: 'csprecon', url: 'github.com/edoardottt/csprecon/cmd/csprecon@latest'}
-    - { tool: 'nipejs', url: 'github.com/i5nipe/nipejs/v2@latest'}
     - { tool: 'puredns', url: 'github.com/d3mondev/puredns/v2@latest'}
     - { tool: 'smap', url: 'github.com/s0md3v/smap/cmd/smap@latest'}
+    - { tool: 'shortscan', url: 'github.com/bitquark/shortscan/cmd/shortscan@latest'}
+    - { tool: 'naabu', url: 'github.com/projectdiscovery/naabu/v2/cmd/naabu@latest'}
+    - { tool: 'fuzzuli', url: 'github.com/musana/fuzzuli@latest'}
+    - { tool: 'gotator', url: 'github.com/Josue87/gotator@latest'}
+    - { tool: 'confused', url: 'github.com/visma-prodsec/confused@latest'}
+    - { tool: 'sourcemapper', url: 'github.com/denandz/sourcemapper@latest'}
+    - { tool: 'alterx', url: 'github.com/projectdiscovery/alterx/cmd/alterx@latest'}
+
+
 
