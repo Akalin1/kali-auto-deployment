@@ -50,6 +50,7 @@
     - { tool: 'confused', url: 'github.com/visma-prodsec/confused@latest'}
     - { tool: 'sourcemapper', url: 'github.com/denandz/sourcemapper@latest'}
     - { tool: 'alterx', url: 'github.com/projectdiscovery/alterx/cmd/alterx@latest'}
+    - { tool: 'mapcidr', url: 'github.com/projectdiscovery/mapcidr/cmd/mapcidr@latest'}
 
 
 

@@ -79,10 +79,10 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # Aliases
 # Sudo inheriting PATH
 alias sudo='sudo env PATH=$PATH'
-alias ls='ls --color=auto'
-alias ll='ls -lh'
-alias la='ls -A'
-alias l='ls -CF'
+alias ls='ls --color=auto --group-directories-first'
+alias ll='ls -lh --group-directories-first'
+alias la='ls -A --group-directories-first'
+alias l='ls -CF --group-directories-first'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -91,6 +91,13 @@ alias ip='ip --color=auto'
 alias cl='clear'
 alias vim='nvim'
 alias vi='nvim'
+alias android-studio='/opt/android-studio/bin/studio.sh'
+
+
+# Custom function
+cd(){
+  builtin cd "$@" && ls
+}
 
 # PATH
 export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
@@ -122,6 +129,7 @@ eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/ohmyposh.toml)"
 # Default terminator
 TerminalEmulator=alacritty
 
+export no_proxy=127.0.0.1,localhost
 export https_proxy=http://192.168.10.1:10800
 export http_proxy=http://192.168.10.1:10800
 export all_proxy=socks5://192.168.10.1:10800
